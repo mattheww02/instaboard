@@ -6,55 +6,55 @@ const Whiteboard: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    // Check if the canvas is successfully referenced
-    if (!canvas) {
+    if (!canvas) { // check for canvas
       console.error("Canvas element not found");
-      return; // Exit if canvas is not available
+      return;
     }
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) {
+    if (!ctx) { // check for context
       console.error("2D context not available");
-      return; // Exit if context is not available
+      return;
     }
 
-    // Set initial drawing properties
-    ctx.strokeStyle = 'black'; // Set stroke color
-    ctx.lineWidth = 2; // Set line width
-    ctx.lineJoin = 'round'; // Set line join style
+    // set initial drawing properties
+    ctx.strokeStyle = 'black'; // pen color
+    ctx.lineWidth = 2; // pen width
+    ctx.lineJoin = 'round'; // join style
 
-    let isDrawing = false; // Flag to check if drawing is active
+    let isDrawing = false;
 
     const draw = (e: MouseEvent) => {
-      if (!isDrawing) return; // If not drawing, exit early
+      if (!isDrawing) return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left; // Calculate x position relative to canvas
-      const y = e.clientY - rect.top;  // Calculate y position relative to canvas
+      const x = e.clientX - rect.left; // x position on canvas
+      const y = e.clientY - rect.top;  // y position on canvas
       
-      ctx.lineTo(x, y); // Use the calculated x and y
+      ctx.lineTo(x, y);
       ctx.stroke();
     };
 
-    const startDrawing = (e: MouseEvent) => {
-      isDrawing = true; // Set drawing flag to true
-      ctx.beginPath(); // Start a new path
+    const startDrawing = (e: MouseEvent) => { // pen down
+      isDrawing = true;
+      ctx.beginPath();
       const rect = canvas.getBoundingClientRect();
-      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top); // Move to starting point
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
       canvas.addEventListener("mousemove", draw);
     };
 
-    const stopDrawing = () => {
-      isDrawing = false; // Set drawing flag to false
-      ctx.closePath(); // Close the path when drawing stops
+    const stopDrawing = () => { // pen up
+      isDrawing = false;
+      ctx.closePath();
       canvas.removeEventListener("mousemove", draw);
     };
 
+    // pen down on mouse down, pen up on mouse up/out of canvas
     canvas.addEventListener("mousedown", startDrawing);
     canvas.addEventListener("mouseup", stopDrawing);
-    canvas.addEventListener("mouseout", stopDrawing); // Stop drawing if mouse leaves the canvas
+    canvas.addEventListener("mouseout", stopDrawing);
 
-    // Cleanup event listeners on component unmount
+    // clean up event listeners
     return () => {
       canvas.removeEventListener("mousedown", startDrawing);
       canvas.removeEventListener("mouseup", stopDrawing);
