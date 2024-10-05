@@ -63,7 +63,7 @@ const Board: React.FC = () => {
     };
   }, []);
   
-  return <canvas ref={canvasRef} width={800} height={600}></canvas>;
+  return <canvas ref={canvasRef} width={800} height={600} className="card overflow-hidden shadow rounded-4 border-0 mb-5"></canvas>;
 };
 
 export default Board;
