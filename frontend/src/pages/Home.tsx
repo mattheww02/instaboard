@@ -30,9 +30,9 @@ const HomePage: React.FC = () => {
               <h1 className="display-3 fw-bolder mb-1"><span className="text-gradient d-inline">InstaBoard</span></h1>
               <div className="badge bg-gradient-primary-to-secondary text-white mb-5"><div className="text-uppercase">Design &middot; Develop &middot; Collaborate</div></div>
               <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
-                <a className="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="board">Create</a>
+                <a className="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/board">Create</a>
                 {/* TODO: handle board creation */} 
-                <a className="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="projects.html">Join a board</a>
+                <a className="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/">Join a board</a>
                 {/* TODO: allow users to join boards */}
               </div>
               <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
