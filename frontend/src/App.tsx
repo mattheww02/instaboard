@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import icon from './assets/img/ib_icon.png';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import './App.css';
 import './css/styles.css';
+
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
-import Board from './pages/Board';
+import BoardPage from './pages/BoardPage';
+import Footer from './components/Footer';
 
 function App() {
   useEffect(() => {
@@ -15,11 +18,16 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App flex-shrink-0">
       <NavBar/>
-      <img src={icon} className="App-logo" alt="logo" />
-      <Home/>
-      <Board/>
+      {/* <img src={icon} className="App-logo" alt="logo" /> */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/board" element={<BoardPage />} />
+        </Routes>
+      </Router>
+      <Footer/>
     </div>
   );
 }

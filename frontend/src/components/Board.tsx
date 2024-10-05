@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const Whiteboard: React.FC = () => {
+const Board: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -66,4 +66,4 @@ const Whiteboard: React.FC = () => {
   return <canvas ref={canvasRef} width={800} height={600}></canvas>;
 };
 
-export default Whiteboard;
+export default Board;

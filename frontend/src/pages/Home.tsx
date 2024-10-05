@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import NameBar from "../components/NameBar";
+import iconWhite from "../assets/img/icon_white.png";
 
 const HomePage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -6,7 +8,7 @@ const HomePage: React.FC = () => {
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
-  };
+  };//TODO: handle in NameBar component
 
   const handleSetUsername = () => {
     if (username.trim()) {
@@ -18,39 +20,38 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>Welcome to InstaBoard</h1>
-      <div>
-        {showUsernameInput ? (
-          <>
-            <input
-              type="text"
-              value={username}
-              onChange={handleUsernameChange}
-              placeholder="Enter your username"
-              style={{ padding: "10px", margin: "10px" }}
-            />
-            <button onClick={handleSetUsername} style={{ padding: "10px", margin: "10px" }}>
-              Confirm Username
-            </button>
-          </>
-        ) : (
-          <button onClick={() => setShowUsernameInput(true)} style={{ padding: "10px", margin: "10px" }}>
-            Set Username
-          </button>
-        )}
+    <header className="py-5">
+      <div className="container px-5 pb-5">
+        <div className="row gx-5 align-items-center">
+          <div className="col-xxl-5">
+              
+            <div className="text-center text-xxl-start">
+              <div className="fs-3 fw-light text-muted">Welcome to</div>
+              <h1 className="display-3 fw-bolder mb-1"><span className="text-gradient d-inline">InstaBoard</span></h1>
+              <div className="badge bg-gradient-primary-to-secondary text-white mb-5"><div className="text-uppercase">Design &middot; Develop &middot; Collaborate</div></div>
+              <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
+                <a className="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="board">Create</a>
+                {/* TODO: handle board creation */} 
+                <a className="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="projects.html">Join a board</a>
+                {/* TODO: allow users to join boards */}
+              </div>
+              <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
+                <NameBar/>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xxl-7">
+            <div className="d-flex justify-content-center mt-5 mt-xxl-0">
+              <div className="profile bg-gradient-primary-to-secondary d-flex justify-content-center align-items-center">
+                <img src={iconWhite} className="App-logo" alt="..." />
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <div>
-        <button style={{ padding: "10px", margin: "10px" }}>
-          Create a Board
-        </button>
-        {/* TODO: handle board creation */}
-        <button style={{ padding: "10px", margin: "10px" }}>
-          Join a Board
-        </button>
-        {/* TODO: allow users to join boards */}
-      </div>
-    </div>
+    </header>
   );
 };
 
