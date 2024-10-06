@@ -1,0 +1,19 @@
+.chatbox-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px; /* Match this to the Board height */
+  width: 400px;  /* Set a fixed width */
+  border-left: 1px solid #ddd;
+}
+
+.chatbox-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  word-wrap: break-word;
+}
+
+.chatbox-form {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}

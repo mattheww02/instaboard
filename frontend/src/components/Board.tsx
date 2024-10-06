@@ -24,12 +24,19 @@ const Board: React.FC = () => {
 
     let isDrawing = false;
 
+    const getMousePos = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
     const draw = (e: MouseEvent) => {
       if (!isDrawing) return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left; // x position on canvas
-      const y = e.clientY - rect.top;  // y position on canvas
+      const { x, y } = getMousePos(e);
       
       ctx.lineTo(x, y);
       ctx.stroke();
