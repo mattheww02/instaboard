@@ -17,3 +17,7 @@
   padding: 10px;
   border-top: 1px solid #ddd;
 }
+
+.message .username {
+  margin-right: 0.5em; /* Add some space between username and message */
+}

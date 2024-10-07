@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUsername } from '../states/userSlice';
 
-const Home: React.FC = () => {
-  const [username, setUsername] = useState('');
+const NameBar: React.FC = () => {
+  const [username, setUsernameState] = useState('');
+  const dispatch = useDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+    const newName = e.target.value;
+    setUsernameState(newName);
+    dispatch(setUsername(newName));
+    console.log("Dispatched username:", username);
   };
 
   return (
@@ -21,4 +27,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default NameBar;

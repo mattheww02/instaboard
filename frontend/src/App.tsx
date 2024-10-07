@@ -20,17 +20,16 @@ function App() {
   }, []);
 
   return (
-    <div className="App flex-shrink-0">
-      <NavBar/>
-      {/* <img src={icon} className="App-logo" alt="logo" /> */}
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/board" element={<BoardPage />} />
-        </Routes>
-      </Router>
-      <Footer/>
-    </div>
+      <div className="App flex-shrink-0">
+        <NavBar/>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/board" element={<BoardPage />} />
+          </Routes>
+        </Router>
+        <Footer/>
+      </div>
   );
 }
 

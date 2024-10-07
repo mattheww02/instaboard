@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from 'react-redux';
+import { RootState } from '../states/store';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]); // store messages
   const [input, setInput] = useState<string>(""); // store user input
   const ws = useRef<WebSocket | null>(null); // websocket to send get/send messages
+  const username = useSelector((state: RootState) => state.user.username);
+  console.log("Current username from store:", username);
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:5000"); // TODO: change URL when deploying
-
     // listen for messages
     ws.current.onmessage = (e: MessageEvent) => {
       const message = e.data;
@@ -34,9 +37,9 @@ const ChatBox: React.FC = () => {
       <div className="chatbox-messages">
         {messages.length === 0 && <p>No messages yet</p>}
         {messages.map((message, index) => (
-          <div key={index} className="message">
-            <div className="username text-primary fw-bold">Username</div>
-            <p>{message}</p>
+          <div key={index} className="message d-flex">
+            <div className="username text-primary fw-bold text-start">{username}</div>
+            <div className="text-start">{message}</div>
           </div>
         ))}
       </div>
