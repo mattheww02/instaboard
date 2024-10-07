@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "Backend/1.0.0": {
         "dependencies": {
+          "CrypticWizard.RandomWordGenerator": "0.9.5",
           "Microsoft.AspNetCore.SignalR": "1.1.0",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions.Reference": "3.1.0.0",
@@ -313,6 +314,17 @@
         },
         "compile": {
           "Backend.dll": {}
+        }
+      },
+      "CrypticWizard.RandomWordGenerator/0.9.5": {
+        "runtime": {
+          "lib/netcoreapp3.1/RandomWordGenerator.dll": {
+            "assemblyVersion": "0.9.5.0",
+            "fileVersion": "0.9.5.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.1/RandomWordGenerator.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication.Abstractions/2.2.0": {
@@ -2295,6 +2307,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "CrypticWizard.RandomWordGenerator/0.9.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3JXTo0kZn7bsbKzhJ+9HGxK8JmXmOT0PhvvQWFy9UsOS7YICI5QSjFKt+RSL8GbMQYQH4bmzAZLG8OFPZnQheg==",
+      "path": "crypticwizard.randomwordgenerator/0.9.5",
+      "hashPath": "crypticwizard.randomwordgenerator.0.9.5.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.Abstractions/2.2.0": {
       "type": "package",

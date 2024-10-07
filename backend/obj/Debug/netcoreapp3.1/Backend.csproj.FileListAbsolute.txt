@@ -21,3 +21,4 @@ C:\Users\mattw\OneDrive\Documents\GitHub\instaboard\backend\obj\Debug\netcoreapp
 C:\Users\mattw\OneDrive\Documents\GitHub\instaboard\backend\obj\Debug\netcoreapp3.1\Backend.dll
 C:\Users\mattw\OneDrive\Documents\GitHub\instaboard\backend\obj\Debug\netcoreapp3.1\Backend.pdb
 C:\Users\mattw\OneDrive\Documents\GitHub\instaboard\backend\obj\Debug\netcoreapp3.1\Backend.genruntimeconfig.cache
+C:\Users\mattw\OneDrive\Documents\GitHub\instaboard\backend\bin\Debug\netcoreapp3.1\RandomWordGenerator.dll

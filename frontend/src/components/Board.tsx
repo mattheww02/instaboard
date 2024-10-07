@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { useParams } from 'react-router-dom';
 
 const Board: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ws = useRef<WebSocket | null>(null);
+  const { boardId } = useParams<{ boardId: string }>();
 
   useEffect(() => {
     const canvas = canvasRef.current;

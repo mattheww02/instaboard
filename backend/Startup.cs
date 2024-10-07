@@ -33,6 +33,23 @@ public class Startup
 {
     // thread safe dictionary tracks all active websockets
     private static ConcurrentDictionary<WebSocket, Task> _webSockets = new ConcurrentDictionary<WebSocket, Task>();
+    
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+
+        services.AddScoped<BoardService, BoardService>();
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+    }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
@@ -54,6 +71,15 @@ public class Startup
             {
                 await next();
             }
+        });
+
+        app.UseCors("AllowAllOrigins");
+
+            app.UseRouting();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
         });
     }
 

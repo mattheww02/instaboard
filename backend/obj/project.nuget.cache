@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0ZYBXyGijg1OcnDx0yG+fQdfDBsJRvv+hJKthh/E7N1f5O+JmhfsHFc2xxYKMtRpfPW9oHsvKRnm7CaxvdDGPg==",
+  "dgSpecHash": "2K3p+SI9hO54z7y2biFPbx3kQbGV0eaPVc+vYHrqIASHd61FvwdWkLLty8cOwkVzHOkf17N3rYjvSd+k1HU6Tw==",
   "success": true,
   "projectFilePath": "C:\\Users\\mattw\\OneDrive\\Documents\\GitHub\\instaboard\\backend\\Backend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\mattw\\.nuget\\packages\\crypticwizard.randomwordgenerator\\0.9.5\\crypticwizard.randomwordgenerator.0.9.5.nupkg.sha512",
     "C:\\Users\\mattw\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\mattw\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
     "C:\\Users\\mattw\\.nuget\\packages\\microsoft.aspnetcore.authorization.policy\\2.2.0\\microsoft.aspnetcore.authorization.policy.2.2.0.nupkg.sha512",

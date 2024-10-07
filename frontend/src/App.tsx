@@ -25,7 +25,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/board" element={<BoardPage />} />
+            <Route path="/board/:boardId" element={<BoardPage />} />
           </Routes>
         </Router>
         <Footer/>
