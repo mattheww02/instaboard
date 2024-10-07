@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace Backend
 {
@@ -26,12 +27,11 @@ public class ChatHub : Hub
         await Clients.All.SendAsync("ReceiveMessage", user, message);
     }
 }
-public class Startup {
+public class Startup
+{
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddWebSockets(options => { 
-            options.KeepAliveInterval = TimeSpan.FromMinutes(2); 
-        });
+        services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,13 +41,18 @@ public class Startup {
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseWebSockets(); // Enabling WebSocket
+        app.UseRouting();
+
+        // Enable WebSockets
+        app.UseWebSockets();
+
+        // Middleware to handle WebSocket requests
         app.Use(async (context, next) =>
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
                 var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                await EchoMessages(context, webSocket); // A method to handle WebSocket connections
+                await HandleWebSocketConnection(webSocket);
             }
             else
             {
@@ -55,23 +60,36 @@ public class Startup {
             }
         });
 
-        app.UseRouting();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 
-    private async Task EchoMessages(HttpContext context, WebSocket webSocket)
+    // Simple WebSocket handler
+    private async Task HandleWebSocketConnection(WebSocket webSocket)
     {
         var buffer = new byte[1024 * 4];
         WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
+        
         while (!result.CloseStatus.HasValue)
         {
-            await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+            // Get the message sent by the client
+            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            Console.WriteLine($"Received: {message}");
+
+            // Send the raw message back to the client without "Echo"
+            var responseMessage = Encoding.UTF8.GetBytes(message);
+            await webSocket.SendAsync(new ArraySegment<byte>(responseMessage, 0, responseMessage.Length), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
+            // Continue listening for more messages
             result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         }
 
         await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
     }
 }
+
 
 }
 
