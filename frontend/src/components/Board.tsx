@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 const Board: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -16,6 +17,19 @@ const Board: React.FC = () => {
       console.error("2D context not available");
       return;
     }
+
+    // set up websocket + handle drawing messages
+    ws.current = new WebSocket("ws://localhost:5000");
+    ws.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "drawing") {
+        drawCoords(ctx, data.coordinates);
+      }
+      else if (data.type === "startDrawing") {
+        ctx.beginPath();
+        ctx.moveTo(data.x, data.y);
+      }
+    };
 
     // set initial drawing properties
     ctx.strokeStyle = 'black'; // pen color
@@ -37,8 +51,19 @@ const Board: React.FC = () => {
 
       const rect = canvas.getBoundingClientRect();
       const { x, y } = getMousePos(e);
-      
-      ctx.lineTo(x, y);
+
+      ws.current?.send(
+        JSON.stringify({
+          type: "drawing",
+          coordinates: { x, y },
+        })
+      );
+    };
+
+    // draw to canvas given coords
+    const drawCoords = (ctx: CanvasRenderingContext2D | null, coordinates: { x: number; y: number }) => {
+      if (!ctx) return;
+      ctx.lineTo(coordinates.x, coordinates.y);
       ctx.stroke();
     };
 
@@ -48,15 +73,22 @@ const Board: React.FC = () => {
       const rect = canvas.getBoundingClientRect();
       ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
       canvas.addEventListener("mousemove", draw);
+      const { x, y } = getMousePos(e);
+
+      ws.current?.send(
+        JSON.stringify({
+          type: "startDrawing",
+          coordinates: { x, y },
+        })
+      );
     };
 
     const stopDrawing = () => { // pen up
       isDrawing = false;
-      ctx.closePath();
       canvas.removeEventListener("mousemove", draw);
     };
 
-    // pen down on mouse down, pen up on mouse up/out of canvas
+    // add event listeners for pen up/down
     canvas.addEventListener("mousedown", startDrawing);
     canvas.addEventListener("mouseup", stopDrawing);
     canvas.addEventListener("mouseout", stopDrawing);

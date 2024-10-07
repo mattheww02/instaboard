@@ -2,18 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import { RootState } from '../states/store';
 
+interface Message {
+  username: string;
+  message: string;
+}
+
 const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]); // store messages
+  const [messages, setMessages] = useState<Message[]>([]); // store messages
   const [input, setInput] = useState<string>(""); // store user input
   const ws = useRef<WebSocket | null>(null); // websocket to send get/send messages
   const username = useSelector((state: RootState) => state.user.username);
-  console.log("Current username from store:", username);
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:5000"); // TODO: change URL when deploying
     // listen for messages
     ws.current.onmessage = (e: MessageEvent) => {
-      const message = e.data;
+      const message = JSON.parse(e.data);
       setMessages((prevMessages) => [...prevMessages, message]); // update list of messages
     };
 
@@ -25,8 +29,9 @@ const ChatBox: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (input.trim() !== "") {
-      ws.current?.send(input); // use websocket to send message to server
+    if (input.trim() !== "") { // TODO: make username persist properly
+      const messageObject = { type: "chat", username: username, message: input, };
+      ws.current?.send(JSON.stringify(messageObject)); // use websocket to send message to server
       setInput(""); // clear input field
     }
   };
@@ -38,8 +43,8 @@ const ChatBox: React.FC = () => {
         {messages.length === 0 && <p>No messages yet</p>}
         {messages.map((message, index) => (
           <div key={index} className="message d-flex">
-            <div className="username text-primary fw-bold text-start">{username}</div>
-            <div className="text-start">{message}</div>
+            <div className="username text-primary fw-bold text-start">{message.username}</div>
+            <div className="text-start">{message.message}</div>
           </div>
         ))}
       </div>

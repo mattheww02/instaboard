@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Collections.Concurrent;
+using System.Text.Json;
 
 namespace Backend
 {
@@ -56,6 +57,19 @@ public class Startup
         });
     }
 
+    public class MessageModel
+    {
+        public string type { get; set; }
+        public string username { get; set; }
+        public string message { get; set; }
+        public Coordinates coordinates { get; set; }
+    }
+    public class Coordinates
+    {
+        public float x { get; set; }
+        public float y { get; set; }
+    }
+
     private async Task HandleWebSocketConnection(WebSocket webSocket)
     {
         // websocket to list of actives
@@ -68,9 +82,18 @@ public class Startup
         {
             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
 
-            // broadcast message to all connected clients
-            await BroadcastMessageAsync(message);
+            var messageObject = JsonSerializer.Deserialize<MessageModel>(message);
 
+            if (messageObject.type == "chat" 
+             || messageObject.type == "drawing" 
+             || messageObject.type == "startDrawing" ) {
+                // broadcast message to all connected clients
+                await BroadcastMessageAsync(message); 
+            }
+            else
+            {
+                Console.WriteLine("Unknown message type");
+            }
             // wait for next message
             result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         }
