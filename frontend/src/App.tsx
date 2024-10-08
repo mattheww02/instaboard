@@ -9,6 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import BoardPage from './pages/BoardPage';
+import About from './pages/About';
 import Footer from './components/Footer';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/board/:boardId" element={<BoardPage />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </Router>
         <Footer/>
