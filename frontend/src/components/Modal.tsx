@@ -26,10 +26,10 @@ const Modal: React.FC<ModalProps> = ({ title, modalId, children }) => {
                   
                   {children}
 
-                  <button className="btn btn-primary" data-bs-dismiss="modal">
+                  {/* <button className="btn btn-primary" data-bs-dismiss="modal">
                     <i className="fas fa-xmark fa-fw"></i>
                     Close Window
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

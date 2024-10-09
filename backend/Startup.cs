@@ -65,8 +65,7 @@ public class Startup
                 if (context.WebSockets.IsWebSocketRequest) {
                     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
                     var webSocketHandler = app.ApplicationServices.GetRequiredService<WebSocketHandler>();
-                    var boardId = context.Request.Query["boardId"]; //TODO: include boardId in the requests from frontend
-                    Console.WriteLine("\n\n\n" + boardId + "\n\n\n");
+                    var boardId = context.Request.Query["boardId"];
                     await webSocketHandler.HandleWebSocketAsync(webSocket, boardId);//HandleWebSocketConnection(webSocket);
                 }
                 else {
@@ -86,75 +85,6 @@ public class Startup
             endpoints.MapControllers();
         });
     }
-
-    // public class MessageModel
-    // {
-    //     public string type { get; set; }
-    //     public string username { get; set; }
-    //     public string message { get; set; }
-    //     public Coordinates coordinates { get; set; }
-    // }
-    // public class Coordinates
-    // {
-    //     public float x { get; set; }
-    //     public float y { get; set; }
-    // }
-
-    // private async Task HandleWebSocketConnection(WebSocket webSocket)
-    // {
-    //     // websocket to list of actives
-    //     _webSockets.TryAdd(webSocket, Task.CompletedTask);
-
-    //     byte[] buffer = new byte[1024 * 4];
-    //     WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-    //     while (!result.CloseStatus.HasValue)
-    //     {
-    //         string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-
-    //         var messageObject = JsonSerializer.Deserialize<MessageModel>(message);
-
-    //         if (messageObject.type == "chat" 
-    //          || messageObject.type == "drawing" 
-    //          || messageObject.type == "startDrawing" ) {
-    //             // broadcast message to all connected clients
-    //             await BroadcastMessageAsync(message); 
-    //         }
-    //         else
-    //         {
-    //             Console.WriteLine("Unknown message type");
-    //         }
-    //         // wait for next message
-    //         result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-    //     }
-
-    //     _webSockets.TryRemove(webSocket, out _);
-
-    //     await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-    // }
-
-    // private async Task BroadcastMessageAsync(string message)
-    // {
-    //     byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
-    //     var tasks = new List<Task>();
-
-    //     foreach (var webSocketPair in _webSockets)
-    //     {
-    //         WebSocket webSocket = webSocketPair.Key;
-
-    //         if (webSocket.State == WebSocketState.Open)
-    //         {
-    //             tasks.Add(webSocket.SendAsync(
-    //                 new ArraySegment<byte>(messageBuffer, 0, messageBuffer.Length),
-    //                 WebSocketMessageType.Text,
-    //                 true,
-    //                 CancellationToken.None));
-    //         }
-    //     }
-
-    //     // wait for all send tasks to complete
-    //     await Task.WhenAll(tasks);
-    // }
 }
 }
 

@@ -1,10 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
+import { SketchPicker } from 'react-color';
+import { IoColorPalette } from "react-icons/io5";
+import { RiEraserFill } from "react-icons/ri";
 
 const Board: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ws = useRef<WebSocket | null>(null);
   const { boardId } = useParams<{ boardId: string }>();
+  const [chosenColor, setChosenColor] = useState<string>("#000");
+  const [pickerVisible, setPickerVisible] = useState<boolean>(false);
+  const [eraserOn, setEraserOn] = useState<boolean>(false);
+
+  const handleColorChange = (color: any) => { setChosenColor(color.hex); }
+
+  const toggleColorPicker = () => { setPickerVisible(!pickerVisible); }
+
+  const toggleEraserOn = () => { setEraserOn(!eraserOn); }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -25,6 +37,8 @@ const Board: React.FC = () => {
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === "drawing") {
+        ctx.strokeStyle = data.color;
+        ctx.lineWidth = data.width;
         drawCoords(ctx, data.coordinates);
       }
       else if (data.type === "startDrawing") {
@@ -34,8 +48,9 @@ const Board: React.FC = () => {
     };
 
     // set initial drawing properties
-    ctx.strokeStyle = 'black'; // pen color
-    ctx.lineWidth = 2; // pen width
+    //ctx.strokeStyle = 'black'; // pen color
+    //ctx.strokeStyle = chosenColor; //TODO: move this to websocket send
+    //ctx.lineWidth = 2; // pen width
     ctx.lineJoin = 'round'; // join style
 
     let isDrawing = false;
@@ -53,11 +68,15 @@ const Board: React.FC = () => {
 
       const { x, y } = getMousePos(e);
 
+      ctx.strokeStyle = chosenColor; //TODO: move this to websocket send
+
       ws.current?.send(
         JSON.stringify({
           type: "drawing",
           boardId: boardId,
           coordinates: { x, y },
+          color: eraserOn ? "white" : chosenColor,
+          width: eraserOn ? 14 : 2
         })
       );
     };
@@ -103,9 +122,51 @@ const Board: React.FC = () => {
       canvas.removeEventListener("mouseout", stopDrawing);
       canvas.removeEventListener("mousemove", draw);
     };
-  }, []);
+  }, [chosenColor, eraserOn]);
   
-  return <canvas ref={canvasRef} width={800} height={600} className="card overflow-hidden shadow rounded-4 border-0 mb-5"></canvas>;
+  return (
+    <div className="relative flex">
+      <div style={{ position: "relative" }}>
+        <canvas ref={canvasRef} width={800} height={600} className="card overflow-hidden shadow rounded-4 border-0 mb-5"></canvas>
+
+        {/* color picker on canvas */}
+        {pickerVisible && (
+          <div
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              zIndex: 10,
+              borderRadius: "8px",
+              padding: "10px"
+            }}
+          >
+            <SketchPicker color={chosenColor} onChangeComplete={handleColorChange} />
+          </div>
+        )}
+
+        {/* draw option buttons */}
+        <div className="col-1" style={{ position: "absolute", top: "10px", right: "10px", zIndex: 15 }}>
+          <button
+            style={{ padding: "0", lineHeight: '1' }}
+            onClick={toggleColorPicker}
+            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${pickerVisible ? "btn-dark" : "btn-light"}`}
+          >
+            <IoColorPalette style={{ fontSize: '1.8rem' }}/>
+          </button>
+          <button
+            style={{ zIndex: 15, padding: "0", lineHeight: '1' }}
+            onClick={toggleEraserOn}
+            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${eraserOn ? "btn-dark" : "btn-light"}`}
+          >
+            <RiEraserFill style={{ fontSize: '1.8rem' }}/>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  );
 };
 
 export default Board;

@@ -21,3 +21,12 @@
 .message .username {
   margin-right: 0.5em; /* Add some space between username and message */
 }
+
+.color-picker {
+  height: 5vw;
+  width: 5vw;
+  border-radius: 0.2vw;
+  margin-top: 1vw;
+  max-height: 4rem;
+  max-width: 4rem;
+}

@@ -12,6 +12,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <script src="https://kit.fontawesome.com/e5661262bb.js" crossOrigin="anonymous"></script>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
