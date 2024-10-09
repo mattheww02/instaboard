@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { SketchPicker } from 'react-color';
-import { IoColorPalette } from "react-icons/io5";
+import { IoColorPalette, IoTrash } from "react-icons/io5";
 import { RiEraserFill } from "react-icons/ri";
 
 const Board: React.FC = () => {
@@ -17,6 +17,15 @@ const Board: React.FC = () => {
   const toggleColorPicker = () => { setPickerVisible(!pickerVisible); }
 
   const toggleEraserOn = () => { setEraserOn(!eraserOn); }
+
+  const clearBoard = () => { 
+    ws.current?.send(
+      JSON.stringify({
+        type: "clearBoard",
+        boardId: boardId,
+      })
+    );
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -45,14 +54,12 @@ const Board: React.FC = () => {
         ctx.beginPath();
         ctx.moveTo(data.x, data.y);
       }
+      else if (data.type == "clearBoard") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
     };
 
-    // set initial drawing properties
-    //ctx.strokeStyle = 'black'; // pen color
-    //ctx.strokeStyle = chosenColor; //TODO: move this to websocket send
-    //ctx.lineWidth = 2; // pen width
-    ctx.lineJoin = 'round'; // join style
-
+    ctx.lineJoin = 'round';
     let isDrawing = false;
 
     const getMousePos = (e: MouseEvent) => {
@@ -67,8 +74,6 @@ const Board: React.FC = () => {
       if (!isDrawing) return;
 
       const { x, y } = getMousePos(e);
-
-      ctx.strokeStyle = chosenColor; //TODO: move this to websocket send
 
       ws.current?.send(
         JSON.stringify({
@@ -150,16 +155,20 @@ const Board: React.FC = () => {
           <button
             style={{ padding: "0", lineHeight: '1' }}
             onClick={toggleColorPicker}
-            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${pickerVisible ? "btn-dark" : "btn-light"}`}
-          >
+            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${pickerVisible ? "btn-dark" : "btn-light"}`}>
             <IoColorPalette style={{ fontSize: '1.8rem' }}/>
           </button>
           <button
-            style={{ zIndex: 15, padding: "0", lineHeight: '1' }}
+            style={{ padding: "0", lineHeight: '1' }}
             onClick={toggleEraserOn}
-            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${eraserOn ? "btn-dark" : "btn-light"}`}
-          >
+            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 ${eraserOn ? "btn-dark" : "btn-light"}`}>
             <RiEraserFill style={{ fontSize: '1.8rem' }}/>
+          </button>
+          <button
+            style={{ padding: "0", lineHeight: '1' }}
+            onClick={clearBoard}
+            className={`btn btn-sm fs-6 fw-bolder me-1 mt-2 btn-light`}>
+            <IoTrash style={{ fontSize: '1.8rem' }}/>
           </button>
         </div>
       </div>

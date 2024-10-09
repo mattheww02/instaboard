@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import NameBar from "../components/NameBar";
 import iconWhite from "../assets/img/icon_white.png";
 import Modal from "../components/Modal";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import JoinBoard from "../components/JoinBoard";
 import { useNavigate } from "react-router-dom";
-import { createNewBoard } from "../services/boardService";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();

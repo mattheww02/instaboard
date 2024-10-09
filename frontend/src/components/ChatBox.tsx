@@ -17,10 +17,12 @@ const ChatBox: React.FC = () => {
 
   useEffect(() => {
     ws.current = new WebSocket(`ws://localhost:5000/ws?boardId=${boardId}`); // TODO: change URL when deploying
-    // listen for messages
+    // listen for chat messages
     ws.current.onmessage = (e: MessageEvent) => {
       const message = JSON.parse(e.data);
-      setMessages((prevMessages) => [...prevMessages, message]); // update list of messages
+      if (message.type == "chat") {
+        setMessages((prevMessages) => [...prevMessages, message]); // update list of messages
+      }
     };
 
     // close websocket connection on disconnect

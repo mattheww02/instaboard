@@ -31,7 +31,8 @@ public class WebSocketHandler
 
             if (messageType == "chat"
                 || messageType == "drawing"
-                || messageType == "startDrawing")
+                || messageType == "startDrawing"
+                || messageType == "clearBoard")
             {
                 await BroadcastToBoardClientsAsync(boardId, message);
             }
