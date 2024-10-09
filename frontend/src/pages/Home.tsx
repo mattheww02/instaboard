@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import JoinBoard from "../components/JoinBoard";
 import { useNavigate } from "react-router-dom";
+import { createNewBoard } from "../services/boardService";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();

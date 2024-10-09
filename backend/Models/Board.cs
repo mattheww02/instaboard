@@ -2,19 +2,31 @@ using System.Collections.Generic;
 
 public class Board
 {
-    public string Id { get; set; } // Unique ID for the board
-    public List<Drawing> Drawings { get; set; } = new List<Drawing>(); // List of drawings
+    public string Id { get; }
+    public List<Drawing> Drawings { get; set; } = new List<Drawing>();
+    public List<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
+
+    public Board(string Id) { this.Id = Id; }
 }
 
 public class Drawing
 {
-    public string UserId { get; set; } // ID of the user who drew
-    public List<Coordinate> Coordinates { get; set; } // List of coordinates for the drawing
-    // You can add additional properties as needed (e.g., color, stroke width, etc.)
+    public string Type { get; } = "drawing";
+    public string UserId { get; set; }
+    public List<Coordinate> Coordinates { get; set; }
+    //TODO: add more properties e.g. color, stroke width
+}
+
+public class ChatMessage
+{
+    public string Type { get; } = "chat";
+    public string UserId { get; set; }
+    public string Message { get; set; }
+    //TODO: add more properties e.g. date/time sent
 }
 
 public class Coordinate
 {
-    public float X { get; set; } // X coordinate
-    public float Y { get; set; } // Y coordinate
+    public float X { get; set; }
+    public float Y { get; set; }
 }

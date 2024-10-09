@@ -31,4 +31,18 @@ public class BoardController : ControllerBase
 
         return Ok(board);
     }
+
+    [HttpPost("{boardId}/chat")]
+    public IActionResult AddChatMessage(string boardId, [FromBody] ChatMessage message)
+    {
+        _boardService.AddChatMessage(boardId, message);
+        return Ok();
+    }
+
+    [HttpPost("{boardId}/drawing")]
+    public IActionResult AddDrawing(string boardId, [FromBody] Drawing drawing)
+    {
+        _boardService.AddDrawing(boardId, drawing);
+        return Ok();
+    }
 }

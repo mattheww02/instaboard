@@ -1,19 +1,17 @@
 
+
 const createNewBoard = async () => {
-    const response = await fetch('/api/boards', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}), // Send any required data if necessary
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to create board');
+    try {
+        const response = await fetch('http://localhost:5000/api/board/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        return data.boardId;
+
+    } catch (error) {
+        console.error('Error creating board:', error);
     }
+};
   
-    const data = await response.json();
-    return data.boardId; // Assuming your backend returns the new board ID
-  };
-  
-  export { createNewBoard };
+export { createNewBoard };

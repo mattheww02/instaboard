@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import { RootState } from '../states/store';
+import { useParams } from "react-router-dom";
 
 interface Message {
   username: string;
@@ -12,9 +13,10 @@ const ChatBox: React.FC = () => {
   const [input, setInput] = useState<string>(""); // store user input
   const ws = useRef<WebSocket | null>(null); // websocket to send get/send messages
   const username = useSelector((state: RootState) => state.user.username);
+  const { boardId } = useParams<{ boardId: string }>();
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:5000"); // TODO: change URL when deploying
+    ws.current = new WebSocket(`ws://localhost:5000/ws?boardId=${boardId}`); // TODO: change URL when deploying
     // listen for messages
     ws.current.onmessage = (e: MessageEvent) => {
       const message = JSON.parse(e.data);
@@ -30,8 +32,12 @@ const ChatBox: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.trim() !== "") { // TODO: make username persist properly
-      const messageObject = { type: "chat", username: username, message: input, };
-      ws.current?.send(JSON.stringify(messageObject)); // use websocket to send message to server
+      ws.current?.send(JSON.stringify({  // use websocket to send message to server
+        type: "chat",
+        boardId: boardId,
+        username: username,
+        message: input
+      }));
       setInput(""); // clear input field
     }
   };

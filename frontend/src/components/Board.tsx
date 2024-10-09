@@ -21,7 +21,7 @@ const Board: React.FC = () => {
     }
 
     // set up websocket + handle drawing messages
-    ws.current = new WebSocket("ws://localhost:5000");
+    ws.current = new WebSocket(`ws://localhost:5000/ws?boardId=${boardId}`);
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === "drawing") {
@@ -51,12 +51,12 @@ const Board: React.FC = () => {
     const draw = (e: MouseEvent) => {
       if (!isDrawing) return;
 
-      const rect = canvas.getBoundingClientRect();
       const { x, y } = getMousePos(e);
 
       ws.current?.send(
         JSON.stringify({
           type: "drawing",
+          boardId: boardId,
           coordinates: { x, y },
         })
       );
@@ -80,6 +80,7 @@ const Board: React.FC = () => {
       ws.current?.send(
         JSON.stringify({
           type: "startDrawing",
+          boardId: boardId,
           coordinates: { x, y },
         })
       );
