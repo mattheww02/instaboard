@@ -1,7 +1,7 @@
 
 
 const About: React.FC = () => {
-    return ( //TODO: make sure to credit artists, package creators etc. on this page
+    return (
         <div>
             <section className="py-5 bg-gradient-primary-to-secondary text-white">
                 <div className="container px-5 my-5">

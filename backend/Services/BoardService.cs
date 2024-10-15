@@ -24,7 +24,7 @@ public class BoardService
     public string CreateBoard()
     {
         var boardId = GenerateBoardId();
-        var newBoard = new Board(boardId);
+        var newBoard = new Board(boardId, 500, 500);
         _boards[boardId] = newBoard;
         return boardId;
     }
