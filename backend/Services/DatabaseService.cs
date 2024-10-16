@@ -11,12 +11,23 @@ public class DatabaseService {
         using var cmd = new NpgsqlCommand();
         cmd.Connection = con;
 
-        cmd.CommandText = $"DROP TABLE IF EXISTS boards";
+        cmd.CommandText= 
+            @"CREATE TABLE boards (
+            id TEXT PRIMARY KEY,
+            image_url TEXT UNIQUE
+            )";
         await cmd.ExecuteNonQueryAsync();
 
         cmd.CommandText= 
-            @"CREATE TABLE boards (
-            id VARCHAR(255) PRIMARY KEY
+            @"CREATE TABLE chats (
+            id TEXT PRIMARY KEY,
+            board_id TEXT NOT NULL,
+            username TEXT NOT NULL,
+            message TEXT NOT NULL,
+            time_sent TIMESTAMP DEFAULT NOW(),
+            CONSTRAINT fk_board
+                FOREIGN KEY(board_id)
+                REFERENCES boards(id)
             )";
         await cmd.ExecuteNonQueryAsync();
     }
